@@ -51,4 +51,17 @@ public class UserService {
         userRepository.save(user);
         return userMapper.convertToDTO(user);
     }
+
+    @Transactional
+    public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Usuario "+id+" no encontrado"));
+        user.setUsername(userRequestDTO.getUsername());
+        user.setPassword(userRequestDTO.getPassword());
+        user.setEmail(userRequestDTO.getEmail());
+        user.setPhone(userRequestDTO.getPhone());
+        user.setBirthday(userRequestDTO.getBirthday());
+        user = userRepository.save(user);
+        return userMapper.convertToDTO(user);
+    }
 }

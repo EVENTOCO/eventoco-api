@@ -51,4 +51,11 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    //http://localhost:8080/api/v1/users/12345
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userDTO){
+        UserResponseDTO updatedUser = userService.updateUser(id, userDTO);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
 }
