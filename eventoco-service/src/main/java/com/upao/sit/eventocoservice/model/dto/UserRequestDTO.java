@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserRequestDTO {
     @NotBlank(message = "El nombre de usuario no puede estar vacio")
-    @Size(message = "El número de cuenta debe tener entre 4 y 20 caracteres")
+    @Size(message = "El nombre de usuario debe tener entre 4 y 20 caracteres")
     private String username;
 
     @NotBlank(message = "La contraseña del usuario no puede estar vacio")
