@@ -1,6 +1,7 @@
 package com.upao.sit.eventocoservice.mapper;
 
 import com.upao.sit.eventocoservice.model.dto.UserRequestDTO;
+import com.upao.sit.eventocoservice.model.dto.UserResponseDTO;
 import com.upao.sit.eventocoservice.model.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,11 @@ public class UserMapper {
         return modelMapper.map(userRequestDTO, User.class);
     }
 
-    public UserRequestDTO convertToDTO(User user){
-        return modelMapper.map(user, UserRequestDTO.class);
+    public UserResponseDTO convertToDTO(User user){
+        return modelMapper.map(user, UserResponseDTO.class);
     }
 
-    public List<UserRequestDTO> convertToDTO(List<User> users){
+    public List<UserResponseDTO> convertToListDTO(List<User> users){
         return users.stream()
                 .map(this::convertToDTO)
                 .toList();

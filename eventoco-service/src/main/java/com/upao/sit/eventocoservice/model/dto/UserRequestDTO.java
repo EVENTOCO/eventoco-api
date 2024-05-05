@@ -17,6 +17,9 @@ public class UserRequestDTO {
     @Size(message = "El número de cuenta debe tener entre 4 y 20 caracteres")
     private String username;
 
+    @NotBlank(message = "La contraseña del usuario no puede estar vacio")
+    private String password;
+
     @NotBlank(message = "El email de usuario no puede estar vacio")
     @Email(message = "El correo debe ser válido")
     private String email;
