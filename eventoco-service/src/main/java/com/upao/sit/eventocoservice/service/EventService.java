@@ -2,25 +2,25 @@ package com.upao.sit.eventocoservice.service;
 
 public class EventService {
 }
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Evento } from './evento.model';
+@Service
+public class EventoService {
 
-@Injectable({
-  providedIn: 'root'
-})
-export class EventoService {
-  private apiUrl = '/api/eventos';
+    private final EventoRepository eventoRepository;
 
-  constructor(private http: HttpClient) { }
+    public EventoService(EventoRepository eventoRepository) {
+        this.eventoRepository = eventoRepository;
+    }
 
-  getEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.apiUrl);
-  }
+    public void eliminarEvento(Long eventoId) {
+        Evento evento = eventoRepository.findById(eventoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Evento no encontrado"));
 
-  eliminarEvento(eventoId: number): Observable<void> {
-    const url = `${this.apiUrl}/${eventoId}`;
-    return this.http.delete<void>(url);
-  }
+        // Verifica si el usuario autenticado tiene permisos para eliminar el evento
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated() || !evento.getCreador().equals(authentication.getName())) {
+            throw new AccessDeniedException("No tienes permisos para eliminar este evento");
+        }
+
+        eventoRepository.delete(evento);
+    }
 }
