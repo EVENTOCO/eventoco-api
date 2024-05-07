@@ -3,18 +3,19 @@ package com.upao.sit.eventocoservice.controller;
 public class EventController {
 }
 @RestController
-@RequestMapping("/api/eventos")
-public class EventoController {
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
 
-    private final EventoService eventoService;
+    private final UsuarioService usuarioService;
 
-    public EventoController(EventoService eventoService) {
-        this.eventoService = eventoService;
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
-    @DeleteMapping("/{eventoId}")
-    public ResponseEntity<Void> eliminarEvento(@PathVariable Long eventoId) {
-        eventoService.eliminarEvento(eventoId);
+    @DeleteMapping("/{usuarioId}")
+    public ResponseEntity<Void> eliminarCuenta(@PathVariable Long usuarioId,
+                                               @RequestBody String contraseña) {
+        usuarioService.eliminarCuenta(usuarioId, contraseña);
         return ResponseEntity.noContent().build();
     }
 }
