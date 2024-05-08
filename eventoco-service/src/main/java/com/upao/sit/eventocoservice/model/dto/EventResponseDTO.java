@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EventResponseDTO {
     private Long id;
+    private UserResponseDTO email;
     private String title;
     private LocalDateTime date;
     private String place;
