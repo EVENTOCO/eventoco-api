@@ -64,4 +64,9 @@ public class UserService {
         user = userRepository.save(user);
         return userMapper.convertToDTO(user);
     }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }
