@@ -47,7 +47,6 @@ public class UserController {
         UserResponseDTO user = userService.getUserByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@Validated @RequestBody UserRequestDTO userDTO){
         UserResponseDTO user = userService.createUser(userDTO);

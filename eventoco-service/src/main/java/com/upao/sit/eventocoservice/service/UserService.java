@@ -45,7 +45,7 @@ public class UserService {
                 .orElseThrow(()-> new ResourceNotFoundException("Usuario con correo "+email+" no encontrado"));
         return userMapper.convertToDTO(user);
     }
-
+    
     @Transactional
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
         User user = userMapper.convertToEntity(userRequestDTO);
