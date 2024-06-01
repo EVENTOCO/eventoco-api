@@ -1,5 +1,7 @@
 package com.upao.sit.eventocoservice.controller;
 
+import com.upao.sit.eventocoservice.exception.BadRequestException;
+import com.upao.sit.eventocoservice.exception.ResourceNotFoundException;
 import com.upao.sit.eventocoservice.model.dto.UserRequestDTO;
 import com.upao.sit.eventocoservice.model.dto.UserResponseDTO;
 import com.upao.sit.eventocoservice.service.UserService;
@@ -67,4 +69,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //http://localhost:8080/api/v1/login
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDTO> loginUser(@Validated @RequestParam String email,
+                                                     @RequestParam String password) {
+        UserResponseDTO user = userService.loginUser(email, password);
+        return ResponseEntity.ok(user);
+    }
 }
