@@ -183,4 +183,22 @@ public class UserServiceTest {
         assertEquals(responseDTO.getPhone(), result.getPhone());
         assertEquals(responseDTO.getBirthday(), result.getBirthday());
     }
+
+    //test/elimiar-usuario
+    @Test
+    public void testDeleteUser_Successful() {
+        // Arrange
+        Long userId = 10L;
+        User user = new User(userId, "username", "password", "user@example.com", "123456789", LocalDate.of(2000, 1, 1));
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        doNothing().when(userRepository).delete(user);
+
+        // Act
+        userService.deleteUser(userId);
+
+        // Assert
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).delete(user);
+    }
 }

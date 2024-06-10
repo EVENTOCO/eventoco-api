@@ -85,4 +85,10 @@ public class UserControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(updatedUser)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    @Test
+    public void testDeleteUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/{id}", 19L))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }
