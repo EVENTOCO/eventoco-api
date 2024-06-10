@@ -53,4 +53,20 @@ public class UserControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/email/{email}", "nuevousuario@example.com"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    //test/crear-usuario
+    @Test
+    public void testCreateUser() throws Exception {
+        UserRequestDTO newUser = new UserRequestDTO();
+        newUser.setUsername("yetanotheruser");
+        newUser.setPassword("password");
+        newUser.setEmail("yetanotheremail@example.com");
+        newUser.setPhone("29182472");
+        newUser.setBirthday(LocalDate.of(2000, 1, 1));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newUser)))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
 }
