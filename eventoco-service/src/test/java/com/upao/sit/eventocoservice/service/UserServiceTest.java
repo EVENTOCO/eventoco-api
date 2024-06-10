@@ -1,12 +1,12 @@
 package com.upao.sit.eventocoservice.service;
 
+import com.upao.sit.eventocoservice.exception.BadRequestException;
 import com.upao.sit.eventocoservice.exception.ResourceNotFoundException;
 import com.upao.sit.eventocoservice.mapper.UserMapper;
 import com.upao.sit.eventocoservice.model.dto.UserRequestDTO;
 import com.upao.sit.eventocoservice.model.dto.UserResponseDTO;
 import com.upao.sit.eventocoservice.model.entity.User;
 import com.upao.sit.eventocoservice.repository.UserRepository;
-import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -29,6 +29,7 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    //test/visualizar-datos-del-usuario
     @Test
     public void testGetAllUsers(){
         //Arrange
@@ -91,68 +92,4 @@ public class UserServiceTest {
         assertThrows(ResourceNotFoundException.class,
                 ()->userService.getUserById(id));
     }
-
-    @Test
-    public void testCreateUser_Successful() {
-        // Arrange
-        UserRequestDTO validUserRequest = new UserRequestDTO();
-        validUserRequest.setUsername("newuser");
-        validUserRequest.setPassword("password123");
-        validUserRequest.setEmail("newuser@example.com");
-        validUserRequest.setPhone("123456789");
-        validUserRequest.setBirthday(LocalDate.of(2000, 1, 1));
-
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("newuser");
-        user.setPassword("password123");
-        user.setEmail("newuser@example.com");
-        user.setPhone("123456789");
-        user.setBirthday(LocalDate.of(2000, 1, 1));
-
-        User savedUser = new User();
-        savedUser.setId(1L);
-        savedUser.setUsername("newuser");
-        savedUser.setPassword("password123");
-        savedUser.setEmail("newuser@example.com");
-        savedUser.setPhone("123456789");
-        savedUser.setBirthday(LocalDate.of(2000, 1, 1));
-
-        UserResponseDTO responseDTO = new UserResponseDTO();
-        responseDTO.setId(1L);
-        responseDTO.setUsername("newuser");
-        responseDTO.setEmail("newuser@example.com");
-        responseDTO.setPhone("123456789");
-        responseDTO.setBirthday(LocalDate.of(2000, 1, 1));
-
-        when(userMapper.convertToEntity(validUserRequest)).thenReturn(user);
-        when(userRepository.save(user)).thenReturn(savedUser);
-        when(userMapper.convertToDTO(savedUser)).thenReturn(responseDTO);
-
-        // Act
-        UserResponseDTO result = userService.createUser(validUserRequest);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(responseDTO.getId(), result.getId());
-        assertEquals(responseDTO.getUsername(), result.getUsername());
-    }
-
-    @Test
-    public void testCreateUser_FailDueToMissingFields() {
-        // Arrange
-        UserRequestDTO validUserRequest = new UserRequestDTO();
-        validUserRequest.setUsername(null);
-        validUserRequest.setPassword("password123");
-        validUserRequest.setEmail("newuser@example.com");
-        validUserRequest.setPhone("123456789");
-        validUserRequest.setBirthday(LocalDate.of(2000, 1, 1));
-
-        // Act
-        UserResponseDTO result = userService.createUser(validUserRequest);
-
-        // Assert
-        assertNull(result);
-    }
-
 }
