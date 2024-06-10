@@ -91,4 +91,12 @@ public class UserControllerIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/{id}", 19L))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
+    @Test
+    public void testLoginUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
+                        .param("email", "admin@upao.edu")
+                        .param("password", "local admin"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
