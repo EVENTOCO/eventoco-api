@@ -69,4 +69,20 @@ public class UserControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
+
+    //test/actualizar-usuario
+    @Test
+    public void testUpdateUser() throws Exception {
+        UserRequestDTO updatedUser = new UserRequestDTO();
+        updatedUser.setUsername("testingchanges");
+        updatedUser.setPassword("newpassword");
+        updatedUser.setEmail("updateduser@example.com");
+        updatedUser.setPhone("0987654321");
+        updatedUser.setBirthday(LocalDate.of(1990, 1, 1));
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/{id}", 2L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedUser)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
