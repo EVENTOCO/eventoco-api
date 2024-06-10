@@ -156,4 +156,31 @@ public class UserServiceTest {
         // Assert
         assertNull(result);
     }
+
+    //test/actualizar-usuario
+    @Test
+    public void testUpdateUser_Successful() {
+        // Arrange
+        Long id = 1L;
+        UserRequestDTO requestDTO = new UserRequestDTO("newusername", "newpassword", "newuser@example.com", "987654321", LocalDate.of(2000, 1, 1));
+        User user = new User(id, "oldusername", "oldpassword", "olduser@example.com", "123456789", LocalDate.of(2000, 1, 1));
+        User updatedUser = new User(id, "newusername", "newpassword", "newuser@example.com", "987654321", LocalDate.of(2000, 1, 1));
+        UserResponseDTO responseDTO = new UserResponseDTO(id, "newusername", "newpassword", "newuser@example.com", "987654321", LocalDate.of(2000, 1, 1));
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(updatedUser);
+        when(userMapper.convertToDTO(updatedUser)).thenReturn(responseDTO);
+
+        // Act
+        UserResponseDTO result = userService.updateUser(id, requestDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(responseDTO.getId(), result.getId());
+        assertEquals(responseDTO.getUsername(), result.getUsername());
+        assertEquals(responseDTO.getPassword(), result.getPassword());
+        assertEquals(responseDTO.getEmail(), result.getEmail());
+        assertEquals(responseDTO.getPhone(), result.getPhone());
+        assertEquals(responseDTO.getBirthday(), result.getBirthday());
+    }
 }
