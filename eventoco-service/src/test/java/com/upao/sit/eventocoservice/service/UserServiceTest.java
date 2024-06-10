@@ -201,4 +201,50 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).delete(user);
     }
+
+    //test/iniciar-sesión
+    @Test
+    public void testLoginUser_Successful() {
+        // Arrange
+        String email = "user@example.com";
+        String password = "password123";
+        User user = new User(1L, "validuser", password, email, "123456789", LocalDate.of(2000, 1, 1));
+        UserResponseDTO responseDTO = new UserResponseDTO(1L, "validuser","password123", email, "123456789", LocalDate.of(2000, 1, 1));
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(userMapper.convertToDTO(user)).thenReturn(responseDTO);
+
+        // Act
+        UserResponseDTO result = userService.loginUser(email, password);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(responseDTO.getEmail(), result.getEmail());
+        assertEquals(responseDTO.getPassword(), result.getPassword());
+    }
+
+    @Test
+    public void testLoginUser_FailDueToInvalidCredentials() {
+        // Arrange
+        String email = "user@example.com";
+        String password = "wrongpassword";
+
+        User user = new User(1L, "validuser", "password123", email, "123456789", LocalDate.of(2000, 1, 1));
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        //Act & Assert
+        assertThrows(BadRequestException.class,
+                ()->userService.loginUser(email, password));
+    }
+
+    @Test
+    public void testLoginUser_FailDueToMissingFields() {
+        // Arrange
+        String email = "";
+        String password = "";
+
+        //Act & Assert
+        assertThrows(ResourceNotFoundException.class,
+                ()->userService.loginUser(email, password));
+    }
 }
