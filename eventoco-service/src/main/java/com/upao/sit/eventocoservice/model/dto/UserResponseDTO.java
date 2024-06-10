@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class UserResponseDTO {
     private Long id;
     private String username;
+    private String password;
     private String email;
     private String phone;
     private LocalDate birthday;

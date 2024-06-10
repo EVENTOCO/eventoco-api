@@ -45,7 +45,7 @@ public class UserService {
                 .orElseThrow(()-> new ResourceNotFoundException("Usuario con correo "+email+" no encontrado"));
         return userMapper.convertToDTO(user);
     }
-    
+
     @Transactional
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
         User user = userMapper.convertToEntity(userRequestDTO);
@@ -68,7 +68,9 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        userRepository.delete(user);
     }
 
     @Transactional
