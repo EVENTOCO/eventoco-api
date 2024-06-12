@@ -1,11 +1,14 @@
 package com.upao.sit.eventocoservice.controller;
 
+import com.upao.sit.eventocoservice.exception.BadRequestException;
+import com.upao.sit.eventocoservice.exception.ResourceNotFoundException;
 import com.upao.sit.eventocoservice.model.dto.UserRequestDTO;
 import com.upao.sit.eventocoservice.model.dto.UserResponseDTO;
 import com.upao.sit.eventocoservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,18 +47,32 @@ public class UserController {
         UserResponseDTO user = userService.getUserByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userDTO){
+    public ResponseEntity<UserResponseDTO> createUser(@Validated @RequestBody UserRequestDTO userDTO){
         UserResponseDTO user = userService.createUser(userDTO);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     //http://localhost:8080/api/v1/users/12345
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userDTO){
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id,
+                                                      @Validated @RequestBody UserRequestDTO userDTO){
         UserResponseDTO updatedUser = userService.updateUser(id, userDTO);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    //http://localhost:8080/api/v1/users/12345
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //http://localhost:8080/api/v1/login
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDTO> loginUser(@Validated @RequestParam String email,
+                                                     @RequestParam String password) {
+        UserResponseDTO user = userService.loginUser(email, password);
+        return ResponseEntity.ok(user);
+    }
 }

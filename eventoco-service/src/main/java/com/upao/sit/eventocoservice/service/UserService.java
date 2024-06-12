@@ -1,5 +1,6 @@
 package com.upao.sit.eventocoservice.service;
 
+import com.upao.sit.eventocoservice.exception.BadRequestException;
 import com.upao.sit.eventocoservice.exception.ResourceNotFoundException;
 import com.upao.sit.eventocoservice.mapper.UserMapper;
 import com.upao.sit.eventocoservice.model.dto.UserRequestDTO;
@@ -62,6 +63,25 @@ public class UserService {
         user.setPhone(userRequestDTO.getPhone());
         user.setBirthday(userRequestDTO.getBirthday());
         user = userRepository.save(user);
+        return userMapper.convertToDTO(user);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        userRepository.delete(user);
+    }
+
+    @Transactional
+    public UserResponseDTO loginUser(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario con correo " + email + " no encontrado"));
+
+        if (!user.getPassword().equals(password)) {
+            throw new BadRequestException("Credenciales incorrectas");
+        }
+
         return userMapper.convertToDTO(user);
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.View;
 
 import java.util.HashSet;
@@ -24,19 +23,20 @@ import java.util.Locale;
 public class RestExceptionHandler {
     private final View error;
     private MessageSource messageSource;
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        ProblemDetail problemDetail =
-                ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,"" +
-                        "La solicitud tiene unos errores de validación.");
-        Set<String> errors = new HashSet<>();
-        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                "La solicitud tiene unos errores de validación.");
 
-        for (FieldError fieldError : fieldErrors) {
-            String message = messageSource.getMessage(fieldError,Locale.getDefault());
+        Set<String> errors = new HashSet<>();
+        List<FieldError> fieldErrors = ex.getFieldErrors();
+
+        for (FieldError fe : fieldErrors) {
+            String message = messageSource.getMessage(fe, Locale.getDefault());
             errors.add(message);
         }
-        problemDetail.setProperty("errors",error);
+        problemDetail.setProperty("errors", errors);
 
         return problemDetail;
     }
