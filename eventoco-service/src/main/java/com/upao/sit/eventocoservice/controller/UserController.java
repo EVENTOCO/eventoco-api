@@ -69,7 +69,7 @@ public class UserController {
     }
 
     //http://localhost:8080/api/v1/login
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<UserResponseDTO> loginUser(@Validated @RequestParam String email,
                                                      @RequestParam String password) {
         UserResponseDTO user = userService.loginUser(email, password);
