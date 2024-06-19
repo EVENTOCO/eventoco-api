@@ -1,10 +1,13 @@
 package com.upao.sit.eventocoservice.controller;
 
-public class UserController {
-}
+import com.upao.sit.eventocoservice.dto.EventoDto;
+import com.upao.sit.eventocoservice.model.Evento;
+import com.upao.sit.eventocoservice.service.EventoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/eventos")
@@ -18,18 +21,16 @@ public class EventoController {
 
     @PutMapping("/{eventoId}")
     public ResponseEntity<Evento> modificarEvento(@PathVariable Long eventoId,
-                                                  @RequestBody EventoDto eventoDto) {
-        
+                                                  @Valid @RequestBody EventoDto eventoDto) {
+
         if (eventoDto == null) {
             return ResponseEntity.badRequest().build();
         }
-        
-        
+
         if (!eventoId.equals(eventoDto.getId())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        
         Evento eventoModificado = eventoService.modificarEvento(eventoId, eventoDto);
         return ResponseEntity.ok(eventoModificado);
     }
