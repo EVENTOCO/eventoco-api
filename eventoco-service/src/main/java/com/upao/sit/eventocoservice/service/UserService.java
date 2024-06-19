@@ -1,6 +1,11 @@
 package com.upao.sit.eventocoservice.service;
 
-public class UserService {
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
+
 @Service
 @Transactional
 public class UsuarioService {
@@ -17,7 +22,6 @@ public class UsuarioService {
         this.comentarioRepository = comentarioRepository;
     }
 
-    @Transactional
     public void eliminarCuenta(Long usuarioId, String contraseña) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
@@ -35,6 +39,7 @@ public class UsuarioService {
         comentarioRepository.deleteAll(comentariosDelUsuario);
 
         // Eliminar otros datos relacionados al usuario
+        // Añadir lógica para eliminar otros datos si es necesario
 
         usuarioRepository.delete(usuario);
     }
