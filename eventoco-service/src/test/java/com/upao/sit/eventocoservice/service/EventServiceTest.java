@@ -193,4 +193,21 @@ public class EventServiceTest {
             eventService.createEvent(validEventRequest);
         });
     }
+    @Test
+    public void testDeleteEvent_Successful(){
+        //Arrange
+        Long eventId = 1L;
+        Event event = new Event(eventId,new User(),"Cumpleaños", LocalDateTime.of(2024, 8, 8, 11,30),"Trujillo","Cumple 22","Decoracion y DJ", "Cumpleaños", true, "45 participantes");
+
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        doNothing().when(eventRepository).delete(event);
+
+        //Act
+        eventService.deleteEvent(eventId);
+
+        //Assert
+        verify(eventRepository, times(1)).findById(eventId);
+        verify(eventRepository, times(1)).delete(event);
+
+    }
 }
