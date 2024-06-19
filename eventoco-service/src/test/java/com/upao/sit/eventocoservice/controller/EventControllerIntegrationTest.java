@@ -68,4 +68,11 @@ public class EventControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(newEvent)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
+
+    @Test
+    public void testDeleteEvent() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/events/{id}", 23L))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
 }
