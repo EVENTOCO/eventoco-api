@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ComentControllerIntegrationTest {
@@ -29,7 +31,7 @@ public class ComentControllerIntegrationTest {
     public void testCrearComentario() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/coments")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new Coment())))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                        .content(objectMapper.writeValueAsString(new Coment(342830L, "Comentario de prueba", LocalDate.now(), LocalDate.now(), "1", "1"))))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 }

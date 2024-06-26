@@ -19,9 +19,9 @@ public class Coment {
     private Long id;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "created_at")
+    @Column(name = "created_at") // fecha de creacion
     private LocalDate created_at;
-    @Column(name = "updated_at")
+    @Column(name = "updated_at") // fecha de actualizacion
     private LocalDate updated_at;
     @JoinColumn(name = "user_id")
     private String user_id;
