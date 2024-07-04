@@ -1,0 +1,8 @@
+com\upao\sit\eventocoservice\controller\ComentControllerIntegrationTest.class
+com\upao\sit\eventocoservice\controller\EventControllerIntegrationTest.class
+com\upao\sit\eventocoservice\EventocoServiceApplicationTests.class
+com\upao\sit\eventocoservice\service\ComentServiceTest.class
+com\upao\sit\eventocoservice\controller\VideoTutorialControllerTest.class
+com\upao\sit\eventocoservice\controller\UserControllerIntegrationTest.class
+com\upao\sit\eventocoservice\service\EventServiceTest.class
+com\upao\sit\eventocoservice\service\UserServiceTest.class
